@@ -5,8 +5,10 @@
 
 import Data.Char
 
+-- Rotate the text by the given offset.
+tryrot :: String -> Int -> String
 tryrot text offset =
-    map rot $ concat text
+    map rot text
     where
       rot c
           | c >= 'A' && c <= 'Z' =
@@ -14,7 +16,11 @@ tryrot text offset =
               chr $ ((base + offset) `mod` 26) + ord 'A'
           | otherwise = c
 
+-- Output each offset in turn.
+tryrots :: String -> [String]
 tryrots text =
     map (tryrot text) [1..26]
 
-main = interact (unlines . tryrots . lines)
+-- Remove line boundaries, apply rots, show each of them.
+main :: IO ()
+main = interact (unlines . tryrots . concat . lines)
